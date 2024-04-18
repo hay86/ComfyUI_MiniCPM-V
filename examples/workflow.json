@@ -1,0 +1,247 @@
+{
+  "last_node_id": 6,
+  "last_link_id": 5,
+  "nodes": [
+    {
+      "id": 6,
+      "type": "ACE_TextPreview",
+      "pos": [
+        912,
+        374
+      ],
+      "size": [
+        392.235501259006,
+        206.07769133014608
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 5,
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null,
+          "shape": 6
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ACE_TextPreview"
+      },
+      "widgets_values": [
+        "",
+        "The image showcases a classical painting of the iconic Mona Lisa, known for its enigmatic smile and mysterious gaze. The artwork is characterized by Renaissance techniques with meticulous attention to detail in brushwork that gives it an aged appearance due to visible cracks on the surface indicating age or exposure over time.\nIn terms of composition, she stands against a background featuring various landscapes including hills under what appears to be cloudy skies above her head. Her attire consists of dark clothing adorned with gold accents around her neckline which adds contrast to her brown hair cascading down past her shoulders towards one side as if swept away from her face during movement."
+      ]
+    },
+    {
+      "id": 4,
+      "type": "ACE_TextPreview",
+      "pos": [
+        473,
+        371
+      ],
+      "size": [
+        393.15557285059344,
+        208.97502908182923
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "text",
+          "type": "STRING",
+          "link": 3,
+          "widget": {
+            "name": "text"
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": null,
+          "shape": 6
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ACE_TextPreview"
+      },
+      "widgets_values": [
+        "",
+        "这张图片展示了一幅油画，主题是一位看起来是文艺复兴时期女性的肖像。这位女士有着长长的卷发和严肃的表情，直视着观者。她的服装包括一件长袖、深色上衣和一顶类似头巾的配饰。背景中描绘了风景元素：远处的山脉和平原延伸至地平线处的水域或湖泊。画笔技法显示出丰富的质感和高光细节，使画面具有立体感。色彩调色板以土色调为主，如棕色与绿色的地形以及女性服饰中的黑色部分。"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "LoadImage",
+      "pos": [
+        60,
+        93
+      ],
+      "size": [
+        352.5771250225543,
+        486.6440042323412
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1,
+            4
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "MonaLisa.jpeg",
+        "image"
+      ]
+    },
+    {
+      "id": 1,
+      "type": "D_MiniCPM_VQA",
+      "pos": [
+        466,
+        103
+      ],
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1,
+          "slot_index": 0
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            3
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "D_MiniCPM_VQA"
+      },
+      "widgets_values": [
+        "请详细描述这张图",
+        "MiniCPM-V-2",
+        0.7000000000000001
+      ]
+    },
+    {
+      "id": 5,
+      "type": "D_MiniCPM_VQA",
+      "pos": [
+        914,
+        106
+      ],
+      "size": {
+        "0": 400,
+        "1": 200
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            5
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "D_MiniCPM_VQA"
+      },
+      "widgets_values": [
+        "Please describe this image in detail",
+        "MiniCPM-V-2",
+        0.7000000000000001
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      2,
+      0,
+      1,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      1,
+      0,
+      4,
+      0,
+      "STRING"
+    ],
+    [
+      4,
+      2,
+      0,
+      5,
+      0,
+      "IMAGE"
+    ],
+    [
+      5,
+      5,
+      0,
+      6,
+      0,
+      "STRING"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
