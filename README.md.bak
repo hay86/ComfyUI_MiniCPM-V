@@ -10,7 +10,7 @@
   [English](./README_en.md)</strong>
 
 <p align="center">
-  MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="http://120.92.209.146:80/">🤖</a> |
+  MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-V-2">🤖</a> |
   OmniLMM-12B <a href="https://huggingface.co/openbmb/OmniLMM-12B/">🤗</a> <a href="http://120.92.209.146:8081">🤖</a> |
   <a href="https://openbmb.vercel.app/minicpm-v-2">MiniCPM-V 2.0 技术博客</a>
 </p>
@@ -27,6 +27,10 @@
 
 ## 更新日志 <!-- omit in toc -->
 
+* [2024.04.23] 我们增加了对 [vllm](#vllm) 的支持，欢迎体验！
+* [2024.04.18] 我们在 HuggingFace Space 新增了 MiniCPM-V 2.0 的 [demo](https://huggingface.co/spaces/openbmb/MiniCPM-V-2)，欢迎体验！
+* [2024.04.17] MiniCPM-V 2.0 现在支持用户部署本地 [WebUI Demo](#本地webui-demo部署) 了，欢迎试用!
+* [2024.04.15] MiniCPM-V 2.0 现在可以通过 SWIFT 框架 [微调](https://github.com/modelscope/swift/blob/main/docs/source/Multi-Modal/minicpm-v-2最佳实践.md) 了，支持流式输出!
 * [2024.04.12] 我们开源了 MiniCPM-V 2.0，该模型刷新了 OCRBench 开源模型最佳成绩，在场景文字识别能力上比肩 Gemini Pro，同时还在综合了 11 个主流多模态大模型评测基准的 <a href="https://rank.opencompass.org.cn/leaderboard-multimodal">OpenCompass</a> 榜单上超过了 Qwen-VL-Chat 10B、CogVLM-Chat 17B 和 Yi-VL 34B 等更大参数规模的模型！点击<a href="https://openbmb.vercel.app/minicpm-v-2">这里</a>查看 MiniCPM-V 2.0 技术博客。
 * [2024.03.14] MiniCPM-V 现在支持 SWIFT 框架下的[微调](https://github.com/modelscope/swift/blob/main/docs/source/Multi-Modal/minicpm-v最佳实践.md)了，感谢 [Jintao](https://github.com/Jintao-Huang) 的贡献！
 * [2024.03.01] MiniCPM-V 现在支持在 Mac 电脑上进行部署！
@@ -624,6 +628,33 @@ python web_demo.py --device cuda --dtype fp16
 PYTORCH_ENABLE_MPS_FALLBACK=1 python web_demo.py --device mps --dtype fp16
 ```
 </details>
+
+### vLLM 部署 <a id='vllm'></a>
+<details>
+<summary>点击查看 vLLM 部署运行的方法</summary>
+由于我们对 vLLM 提交的 PR 还在 review 中，因此目前我们 fork 了一个 vLLM 仓库以供测试使用。
+
+1. 首先克隆我们 fork 的 vLLM 库:
+```shell
+git clone https://github.com/OpenBMB/vllm.git
+```
+2. 安装 vLLM 库:
+```shell
+cd vllm
+pip install -e .
+```
+3. 安装 timm 库: 
+```shell
+pip install timm=0.9.10
+```
+4. 测试运行示例程序:
+```shell
+python examples/minicpmv_example.py 
+```
+
+
+</details>
+
 
 ## 微调
 
