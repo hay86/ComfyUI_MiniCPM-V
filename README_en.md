@@ -8,7 +8,7 @@
   English</strong>
 
 <p align="center">
-  MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="http://120.92.209.146:80/">🤖</a> |
+  MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-V-2">🤖</a> |
   OmniLMM-12B <a href="https://huggingface.co/openbmb/OmniLMM-12B/">🤗</a> <a href="http://120.92.209.146:8081">🤖</a> | <a href="https://openbmb.vercel.app/minicpm-v-2-en"> Technical Blog </a>
 </p>
 
@@ -25,6 +25,10 @@
 
 ## News <!-- omit in toc -->
 
+* [2024.04.23] MiniCPM-V-2.0 supports vLLM now! Click [here](#vllm) to view more details.
+* [2024.04.18] We create a HuggingFace Space to host the demo of MiniCPM-V 2.0 at [here](https://huggingface.co/spaces/openbmb/MiniCPM-V-2)!
+* [2024.04.17] MiniCPM-V-2.0 supports deploying [WebUI Demo](#webui-demo) now!
+* [2024.04.15] MiniCPM-V-2.0 now also supports [fine-tuning](https://github.com/modelscope/swift/blob/main/docs/source/Multi-Modal/minicpm-v-2最佳实践.md) with the SWIFT framework!
 * [2024.04.12] We open-source MiniCPM-V-2.0, which achieves comparable performance with Gemini Pro in understanding scene text and outperforms strong Qwen-VL-Chat 9.6B and Yi-VL 34B on <a href="https://rank.opencompass.org.cn/leaderboard-multimodal">OpenCompass</a>, a comprehensive evaluation over 11 popular benchmarks. Click <a href="https://openbmb.vercel.app/minicpm-v-2">here</a> to view the MiniCPM-V 2.0 technical blog.
 * [2024.03.14] MiniCPM-V now supports [fine-tuning](https://github.com/modelscope/swift/blob/main/docs/source/Multi-Modal/minicpm-v最佳实践.md) with the SWIFT framework. Thanks to [Jintao](https://github.com/Jintao-Huang) for the contribution！
 * [2024.03.01] MiniCPM-V now can be deployed on Mac!
@@ -617,6 +621,30 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 python web_demo.py --device mps --dtype fp16
 ```
 </details>
 
+### Inference with vLLM<a id="vllm"></a>
+
+<details>
+<summary>Click to see how to inference with vLLM </summary>
+Because our pull request to vLLM is still waiting for reviewing, we fork this repository to build and test our vLLM demo. Here are the steps:
+
+1. Clone our version of vLLM:
+```shell
+git clone https://github.com/OpenBMB/vllm.git
+```
+2. Install vLLM:
+```shell
+cd vllm
+pip install -e .
+```
+3. Install timm: 
+```shell
+pip install timm=0.9.10
+```
+4. Run our demo:
+```shell
+python examples/minicpmv_example.py 
+```
+</details>
 
 ## Finetune
 
