@@ -1,4 +1,4 @@
-# ComfyUI OpenVoice (Unofficial Support)
+# ComfyUI MiniCPM-V (Unofficial Support)
 
 Unofficial [MiniCPM-V](https://github.com/OpenBMB/MiniCPM-V) support for [ComfyUI](https://github.com/comfyanonymous/ComfyUI).
 
