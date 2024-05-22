@@ -19,7 +19,7 @@ class D_MiniCPM_VQA:
             "required": {
                 "image": ("IMAGE",),
                 "text": ("STRING", {"default": '', "multiline": True}),
-                "model": (["MiniCPM-V", "MiniCPM-V-2"],),
+                "model": (["MiniCPM-V", "MiniCPM-V-2", "MiniCPM-Llama3-V-2_5"],),
                 "temperature": ("FLOAT", {"default": 0.7,})
             },
         }
@@ -45,7 +45,7 @@ class D_MiniCPM_VQA:
         with torch.no_grad():
             image = ToPILImage()(image.permute([0,3,1,2])[0]).convert("RGB")
 
-            result, context, _ = self.model.chat(
+            result = self.model.chat(
                 image=image,
                 msgs=[{'role': 'user', 'content': text}],
                 context=None,
@@ -53,6 +53,8 @@ class D_MiniCPM_VQA:
                 sampling=True,
                 temperature=temperature
             )
+            if model in ["MiniCPM-V", "MiniCPM-V-2"]:
+                result = result[0]
             return (result,)
         
 
