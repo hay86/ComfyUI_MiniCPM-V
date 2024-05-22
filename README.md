@@ -3,6 +3,7 @@
 Unofficial [MiniCPM-V](https://github.com/OpenBMB/MiniCPM-V) support for [ComfyUI](https://github.com/comfyanonymous/ComfyUI).
 
 ## Important Updates
+- **2024/05/22:** Added support for MiniCPM-Llama3-V 2.5 (16GB+ video memory required)
 - **2024/04/18:** Added ComfyUI nodes and workflow examples
 
 ## Basic Workflow
