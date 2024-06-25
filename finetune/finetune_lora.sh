@@ -28,8 +28,10 @@ torchrun $DISTRIBUTED_ARGS finetune.py  \
     --remove_unused_columns false \
     --label_names "labels" \
     --prediction_loss_only false \
-    --bf16 true \
-    --bf16_full_eval true \
+    --bf16 false \
+    --bf16_full_eval false \
+    --fp16 true \
+    --fp16_full_eval true \
     --do_train \
     --do_eval \
     --tune_vision true \
@@ -37,6 +39,7 @@ torchrun $DISTRIBUTED_ARGS finetune.py  \
     --use_lora true \
     --lora_target_modules "llm\..*layers\.\d+\.self_attn\.(q_proj|k_proj)" \
     --model_max_length 2048 \
+    --max_slice_nums 9 \
     --max_steps 10000 \
     --eval_steps 1000 \
     --output_dir output/output_minicpmv2_lora \

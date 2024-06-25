@@ -28,21 +28,22 @@ torchrun $DISTRIBUTED_ARGS finetune.py  \
     --remove_unused_columns false \
     --label_names "labels" \
     --prediction_loss_only false \
-    --bf16 true \
-    --bf16_full_eval true \
-    --fp16 false \
-    --fp16_full_eval false \
+    --bf16 false \
+    --bf16_full_eval false \
+    --fp16 true \
+    --fp16_full_eval true \
     --do_train \
     --do_eval \
     --tune_vision true \
     --tune_llm true \
     --model_max_length 2048 \
+    --max_slice_nums 9 \
     --max_steps 10000 \
     --eval_steps 1000 \
     --output_dir output/output_minicpmv2 \
     --logging_dir output/output_minicpmv2 \
     --logging_strategy "steps" \
-    --per_device_train_batch_size 2 \
+    --per_device_train_batch_size 1 \
     --per_device_eval_batch_size 1 \
     --gradient_accumulation_steps 1 \
     --evaluation_strategy "steps" \

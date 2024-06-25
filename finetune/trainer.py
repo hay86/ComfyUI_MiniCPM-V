@@ -1,10 +1,11 @@
-from typing import Any, Dict, List, Optional, Tuple, Union
-
 import torch
 import torch.nn as nn
+import deepspeed
 from transformers import Trainer
 from transformers.trainer_pt_utils import nested_detach
 from transformers.utils import is_sagemaker_mp_enabled
+from transformers.trainer import *
+from transformers.integrations import is_deepspeed_zero3_enabled
 
 
 class CPMTrainer(Trainer):
@@ -13,11 +14,21 @@ class CPMTrainer(Trainer):
             labels = inputs.pop("labels")
         else:
             labels = None
-        if not self. args.use_lora:
-            outputs = self.model(data = inputs, use_cache=False)
+        self.model.resampler.pos_embed = self.model.resampler.pos_embed.to(self.model.device)
+        if is_deepspeed_zero3_enabled():
+            with deepspeed.zero.GatheredParameters(self.model.resampler.attn.parameters(), modifier_rank=0):
+                if not self.args.use_lora:
+                    outputs = self.model(data = inputs, use_cache=False)
+                else:
+                    with self.model._enable_peft_forward_hooks(**inputs):
+                        outputs = self.model.base_model(data = inputs, use_cache=False)
         else:
-            outputs = self.model.base_model(data = inputs, use_cache=False)
-
+            if not self.args.use_lora:
+                outputs = self.model(data = inputs, use_cache=False)
+            else:
+                with self.model._enable_peft_forward_hooks(**inputs):
+                    outputs = self.model.base_model(data = inputs, use_cache=False)
+                
         if labels is not None:
             # Flatten the tokens
             loss_fct = nn.CrossEntropyLoss()
@@ -165,3 +176,96 @@ class CPMTrainer(Trainer):
             logits = logits[0]
 
         return (loss, logits, labels)
+        
+    def training_step(self, model: nn.Module, inputs: Dict[str, Union[torch.Tensor, Any]]) -> torch.Tensor:
+        """
+        Perform a training step on a batch of inputs.
+
+        Subclass and override to inject custom behavior.
+
+        Args:
+            model (`nn.Module`):
+                The model to train.
+            inputs (`Dict[str, Union[torch.Tensor, Any]]`):
+                The inputs and targets of the model.
+
+                The dictionary will be unpacked before being fed to the model. Most models expect the targets under the
+                argument `labels`. Check your model's documentation for all accepted arguments.
+
+        Return:
+            `torch.Tensor`: The tensor with training loss on this batch.
+        """
+        model.train()
+        inputs = self._prepare_inputs(inputs)
+
+        if is_sagemaker_mp_enabled():
+            loss_mb = smp_forward_backward(model, inputs, self.args.gradient_accumulation_steps)
+            return loss_mb.reduce_mean().detach().to(self.args.device)
+
+        with self.compute_loss_context_manager():
+            loss = self.compute_loss(model, inputs)
+
+        del inputs
+        torch.cuda.empty_cache()
+
+        if self.args.n_gpu > 1:
+            loss = loss.mean()  # mean() to average on multi-gpu parallel training
+
+        if self.use_apex:
+            with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+                scaled_loss.backward()
+        else:
+            if is_deepspeed_zero3_enabled():
+                with deepspeed.zero.GatheredParameters(self.model.resampler.attn.parameters(), modifier_rank=0):
+                    self.accelerator.backward(loss)
+            else:
+                self.accelerator.backward(loss)
+
+        return loss.detach() / self.args.gradient_accumulation_steps
+    
+    def _save(self, output_dir: Optional[str] = None, state_dict=None):
+        # If we are executing this function, we are the process zero, so we don't check for that.
+        output_dir = output_dir if output_dir is not None else self.args.output_dir
+        os.makedirs(output_dir, exist_ok=True)
+        logger.info(f"Saving model checkpoint to {output_dir}")
+
+        supported_classes = (PreTrainedModel,) if not is_peft_available() else (PreTrainedModel, PeftModel)
+        # Save a trained model and configuration using `save_pretrained()`.
+        # They can then be reloaded using `from_pretrained()`
+        if not isinstance(self.model, supported_classes):
+            if state_dict is None:
+                state_dict = self.model.state_dict()
+
+            if isinstance(unwrap_model(self.model), supported_classes):
+                unwrap_model(self.model).save_pretrained(
+                    output_dir, state_dict=state_dict, safe_serialization=self.args.save_safetensors
+                )
+            else:
+                logger.info("Trainer.model is not a `PreTrainedModel`, only saving its state dict.")
+                if self.args.save_safetensors:
+                    safetensors.torch.save_file(
+                        state_dict, os.path.join(output_dir, SAFE_WEIGHTS_NAME), metadata={"format": "pt"}
+                    )
+                else:
+                    torch.save(state_dict, os.path.join(output_dir, WEIGHTS_NAME))
+        else:
+            if self.args.use_lora:
+                from collections import OrderedDict
+                state_dict_vision = OrderedDict()
+                for key, values in state_dict.items():
+                    if 'vpm' in key or 'resampler' in key or 'embed_tokens' in key:
+                        state_dict_vision[key] = values
+                self.model.save_pretrained(
+                    output_dir, state_dict=state_dict, safe_serialization=self.args.save_safetensors
+                )
+                torch.save(state_dict_vision, f"{output_dir}/vpm_resampler_embedtokens.pt", )
+            else:
+                self.model.save_pretrained(
+                    output_dir, state_dict=state_dict, safe_serialization=self.args.save_safetensors
+                )
+
+        if self.tokenizer is not None:
+            self.tokenizer.save_pretrained(output_dir)
+
+        # Good practice: save your training arguments together with the trained model
+        torch.save(self.args, os.path.join(output_dir, TRAINING_ARGS_NAME))

@@ -7,6 +7,9 @@
   <strong>[中文](./README_zh.md) |
   English</strong>
 
+Join our <a href="docs/wechat.md" target="_blank"> 💬 WeChat</a> 
+
+
 <p align="center">
   MiniCPM-Llama3-V  2.5  <a href="https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5">🤖</a> |
   MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-V-2">🤖</a> |
@@ -27,14 +30,14 @@
 
 #### 📌 Pinned
 
-* [2024.05.28] 🚀🚀🚀 MiniCPM-Llama3-V 2.5 now fully supports its feature in [llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md) and [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5)! Please pull the latest code for llama.cpp & ollama. We also release GGUF in various sizes [here](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf/tree/main). FAQ list for ollama usage is comming within a day. Please stay tuned!
+* [2024.05.28] 🚀🚀🚀 MiniCPM-Llama3-V 2.5 now fully supports its feature in llama.cpp and ollama! Please pull the latest code **of our provided forks** ([llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md), [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5)). GGUF models in various sizes are available [here](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf/tree/main). MiniCPM-Llama3-V 2.5 series is **not supported by the official repositories yet**, and we are working hard to merge PRs. Please stay tuned!
 * [2024.05.28] 💫 We now support LoRA fine-tuning for MiniCPM-Llama3-V 2.5, using only 2 V100 GPUs! See more statistics [here](https://github.com/OpenBMB/MiniCPM-V/tree/main/finetune#model-fine-tuning-memory-usage-statistics).
 * [2024.05.23] 🔍 We've released a comprehensive comparison between Phi-3-vision-128k-instruct and MiniCPM-Llama3-V 2.5, including benchmarks evaluations, multilingual capabilities, and inference efficiency 🌟📊🌍🚀. Click [here](./docs/compare_with_phi-3_vision.md) to view more details.
 * [2024.05.23] 🔥🔥🔥 MiniCPM-V tops GitHub Trending and Hugging Face Trending! Our demo, recommended by Hugging Face Gradio’s official account, is available [here](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5). Come and try it out!
 
 <br>
 
-
+* [2024.06.03] Now, you can run MiniCPM-Llama3-V 2.5 on multiple low VRAM GPUs(12 GB or 16 GB) by distributing the model's layers across multiple GPUs. For more details, Check this [link](https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/inference_on_multiple_gpus.md).
 * [2024.05.25] MiniCPM-Llama3-V 2.5 now supports streaming outputs and customized system prompts. Try it [here](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5#usage)!
 * [2024.05.24] We release the MiniCPM-Llama3-V 2.5 [gguf](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf), which supports [llama.cpp](#inference-with-llamacpp) inference and provides a 6~8 token/s smooth decoding on mobile phones. Try it now!
 * [2024.05.20] We open-soure MiniCPM-Llama3-V 2.5, it has improved OCR capability and supports 30+ languages, representing the first end-side MLLM achieving GPT-4V level performance! We provide [efficient inference](#deployment-on-mobile-phone) and [simple fine-tuning](./finetune/readme.md). Try it now!
@@ -53,14 +56,13 @@
 
 - [MiniCPM-Llama3-V 2.5](#minicpm-llama3-v-25)
 - [MiniCPM-V 2.0](#minicpm-v-20)
-- [Online Demo](#online-demo)
+- [Chat with Our Demo on Gradio](#chat-with-our-demo-on-gradio)
 - [Install](#install)
 - [Inference](#inference)
   - [Model Zoo](#model-zoo)
   - [Multi-turn Conversation](#multi-turn-conversation)
   - [Inference on Mac](#inference-on-mac)
   - [Deployment on Mobile Phone](#deployment-on-mobile-phone)
-  - [WebUI Demo](#webui-demo)
   - [Inference with llama.cpp](#inference-with-llamacpp)
   - [Inference with vLLM](#inference-with-vllm)
 - [Fine-tuning](#fine-tuning)
@@ -458,9 +460,31 @@ We deploy MiniCPM-V 2.0 on end devices. The demo video is the raw screen recordi
 | OmniLMM-12B  | [Document](./omnilmm_en.md)   |  
 
 
+## Chat with Our Demo on Gradio
 
-## Online Demo
-Click here to try out the Demo of [MiniCPM-Llama3-V 2.5](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5) ｜ [MiniCPM-V 2.0](https://huggingface.co/spaces/openbmb/MiniCPM-V-2).
+We provide online and local demos powered by HuggingFace [Gradio](https://github.com/gradio-app/gradio), the most popular model deployment framework nowadays. It supports streaming outputs, progress bars, queuing, alerts,  and other useful features.
+
+
+### Online Demo <!-- omit in toc --> 
+
+Click here to try out the online demo of [MiniCPM-Llama3-V 2.5](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5) ｜ [MiniCPM-V 2.0](https://huggingface.co/spaces/openbmb/MiniCPM-V-2) on HuggingFace Spaces.
+
+### Local WebUI Demo <!-- omit in toc --> 
+  
+You can easily build your own local WebUI demo with Gradio using the following commands.
+  
+```shell
+pip install -r requirements.txt
+```
+  
+```shell
+# For NVIDIA GPUs, run:
+python web_demo_2.5.py --device cuda
+
+# For Mac with MPS (Apple silicon or AMD GPUs), run:
+PYTORCH_ENABLE_MPS_FALLBACK=1 python web_demo_2.5.py --device mps
+```
+
 
 ## Install
 
@@ -580,25 +604,7 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 python test.py
 </details>
 
 ### Deployment on Mobile Phone
-MiniCPM-V 2.0 can be deployed on mobile phones with Android operating systems. 🚀 Click [here](https://github.com/OpenBMB/mlc-MiniCPM) to install apk. MiniCPM-Llama3-V 2.5 coming soon.
-
-### WebUI Demo
-
-<details>
-<summary>Click to see how to deploy WebUI demo on different devices </summary>
-  
-```shell
-pip install -r requirements.txt
-```
-  
-```shell
-# For NVIDIA GPUs, run:
-python web_demo_2.5.py --device cuda
-
-# For Mac with MPS (Apple silicon or AMD GPUs), run:
-PYTORCH_ENABLE_MPS_FALLBACK=1 python web_demo_2.5.py --device mps
-```
-</details>
+MiniCPM-Llama3-V 2.5 and MiniCPM-V 2.0 can be deployed on mobile phones with Android operating systems. 🚀 Click [MiniCPM-Llama3-V 2.5](http://minicpm.modelbest.cn/android/modelbest-release-20240528_182155.apk) / [MiniCPM-V 2.0](https://github.com/OpenBMB/mlc-MiniCPM) to install apk.
 
 ### Inference with llama.cpp<a id="inference-with-llamacpp"></a>
 MiniCPM-Llama3-V 2.5 can run with llama.cpp now! See our fork of [llama.cpp](https://github.com/OpenBMB/llama.cpp/tree/minicpm-v2.5/examples/minicpmv) for more detail. This implementation supports smooth inference of 6~8 token/s on mobile phones (test environment：Xiaomi 14 pro + Snapdragon 8 Gen 3).
@@ -606,7 +612,7 @@ MiniCPM-Llama3-V 2.5 can run with llama.cpp now! See our fork of [llama.cpp](htt
 ### Inference with vLLM<a id="vllm"></a>
 
 <details>
-<summary>Click to see how to inference with vLLM </summary>
+<summary>Click to see how to inference MiniCPM-V 2.0 with vLLM (MiniCPM-Llama3-V 2.5 coming soon) </summary>
 Because our pull request to vLLM is still waiting for reviewing, we fork this repository to build and test our vLLM demo. Here are the steps:
 
 1. Clone our version of vLLM:
@@ -620,7 +626,7 @@ pip install -e .
 ```
 3. Install timm: 
 ```shell
-pip install timm=0.9.10
+pip install timm==0.9.10
 ```
 4. Run our demo:
 ```shell
@@ -651,13 +657,12 @@ Best Practices：[MiniCPM-V 1.0](https://github.com/modelscope/swift/blob/main/d
 
 ## Model License <!-- omit in toc -->
 
-The code in this repo is released according to [Apache-2.0](https://github.com/OpenBMB/MiniCPM/blob/main/LICENSE)
+* This repository is released under the [Apache-2.0](https://github.com/OpenBMB/MiniCPM/blob/main/LICENSE) License. 
 
-The usage of MiniCPM-V's and OmniLMM's parameters is subject to "[General Model License Agreement - Source Notes - Publicity Restrictions - Commercial License](https://github.com/OpenBMB/General-Model-License/blob/main/通用模型许可协议-来源说明-宣传限制-商业授权.md)"
+* The usage of MiniCPM-V model weights must strictly follow [MiniCPM Model License.md](https://github.com/OpenBMB/MiniCPM/blob/main/MiniCPM%20Model%20License.md).
 
-The parameters are fully open to academic research
-
-Please contact cpm@modelbest.cn to obtain written authorization for commercial uses. Free commercial use is also allowed after registration.
+* The models and weights of MiniCPM are completely free for academic research. after filling out a ["questionnaire"](https://modelbest.feishu.cn/share/base/form/shrcnpV5ZT9EJ6xYjh3Kx0J6v8g) for registration, are also available for free commercial use.
+  
 
 ## Statement <!-- omit in toc -->
 
@@ -682,9 +687,31 @@ This project is developed by the following institutions:
 
 ## 🌟 Star History
 
-<div>
-<img src="./assets/Star-History.png" width="500em" ></img> 
-</div>
+
+<table align="center">
+    <p align="center">
+      <img src="assets/star_history.svg"/>
+    </p>
+</table>
+
+<!-- <picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="
+      https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date&theme=dark
+    "
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="
+      https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date
+    "
+  />
+  <img
+    alt="Star History Chart"
+    src="https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date"
+  />
+</picture> -->
 
 ## Citation
 
