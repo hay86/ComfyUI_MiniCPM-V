@@ -9,6 +9,8 @@
   <strong>中文 |
   [English](./README_en.md)</strong>
 
+ 加入我们的 <a href="docs/wechat.md" target="_blank"> 💬 微信社区</a> 
+
 <p align="center">
   MiniCPM-Llama3-V  2.5  <a href="https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5">🤖</a> |
   MiniCPM-V 2.0  <a href="https://huggingface.co/openbmb/MiniCPM-V-2/">🤗</a> <a href="https://huggingface.co/spaces/openbmb/MiniCPM-V-2">🤖</a> |
@@ -30,17 +32,20 @@
 
 #### 📌 置顶
 
-* [2024.05.28] 💥 MiniCPM-Llama3-V 2.5 现在在 [llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md) 和 [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5) 中完全支持其功能！请拉取最新的 llama.cpp 和 ollama 代码。我们还发布了各种大小的 GGUF 版本，请点击[这里](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf/tree/main)查看。ollama 使用的 FAQ 将在一天内发布，敬请关注！
+* [2024.05.28] 💥 MiniCPM-Llama3-V 2.5 现在在 llama.cpp 和 ollama 中完全支持其功能！**请拉取我们最新的 fork 来使用**：[llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md) & [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5)。我们还发布了各种大小的 GGUF 版本，请点击[这里](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf/tree/main)查看。请注意，**目前官方仓库尚未支持 MiniCPM-Llama3-V 2.5**，我们也正积极推进将这些功能合并到 llama.cpp & ollama 官方仓库，敬请关注！
 * [2024.05.28] 💫 我们现在支持 MiniCPM-Llama3-V 2.5 的 LoRA 微调，更多内存使用统计信息可以在[这里](https://github.com/OpenBMB/MiniCPM-V/tree/main/finetune#model-fine-tuning-memory-usage-statistics)找到。
 * [2024.05.23] 🔍 我们添加了Phi-3-vision-128k-instruct 与 MiniCPM-Llama3-V 2.5的全面对比，包括基准测试评估、多语言能力和推理效率 🌟📊🌍🚀。点击[这里](./docs/compare_with_phi-3_vision.md)查看详细信息。
 * [2024.05.23] 🔥🔥🔥 MiniCPM-V 在 GitHub Trending 和 Hugging Face Trending 上登顶！MiniCPM-Llama3-V 2.5 Demo 被 Hugging Face 的 Gradio 官方账户推荐，欢迎点击[这里](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5)体验！
 
+
 <br>
 
+
+* [2024.06.03] 现在，你可以利用多张低显存显卡（12G/16G）进行GPU串行推理。详情请参见该[文档](https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/inference_on_multiple_gpus.md)配置。
 * [2024.05.25] MiniCPM-Llama3-V 2.5 [支持流式输出和自定义系统提示词](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5#usage)了，欢迎试用!
 * [2024.05.24] 我们开源了 MiniCPM-Llama3-V 2.5 [gguf](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf)，支持 [llama.cpp](#llamacpp-部署) 推理！实现端侧 6-8 tokens/s 的流畅解码，欢迎试用！
 * [2024.05.20] 我们开源了 MiniCPM-Llama3-V 2.5，增强了 OCR 能力，支持 30 多种语言，并首次在端侧实现了 GPT-4V 级的多模态能力！我们提供了[高效推理](#手机端部署)和[简易微调](./finetune/readme.md)的支持，欢迎试用！
-* [2024.04.23] 我们增加了对 [vLLM](#vllm) 的支持，欢迎体验！
+* [2024.04.23] 我们增加了MiniCPM-V 2.0对 [vLLM](#vllm) 的支持，欢迎体验！
 * [2024.04.18] 我们在 HuggingFace Space 新增了 MiniCPM-V 2.0 的 [demo](https://huggingface.co/spaces/openbmb/MiniCPM-V-2)，欢迎体验！
 * [2024.04.17] MiniCPM-V 2.0 现在支持用户部署本地 [WebUI Demo](#本地webui-demo部署) 了，欢迎试用!
 * [2024.04.15] MiniCPM-V 2.0 现在可以通过 SWIFT 框架 [微调](https://github.com/modelscope/swift/blob/main/docs/source/Multi-Modal/minicpm-v-2最佳实践.md) 了，支持流式输出!
@@ -54,7 +59,7 @@
 
 - [MiniCPM-Llama3-V 2.5](#minicpm-llama3-v-25)
 - [MiniCPM-V 2.0](#minicpm-v-20)
-- [Online Demo](#online-demo)
+- [Demo](#demo)
 - [安装](#安装)
 - [推理](#推理)
   - [模型库](#模型库)
@@ -465,9 +470,31 @@
 | OmniLMM-12B  | [文档](./omnilmm.md)   |  
 
 
-## Online Demo
+## Demo
 
-欢迎通过以下链接使用我们的网页端推理服务： [MiniCPM-Llama3-V 2.5](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5) ｜ [MiniCPM-V 2.0](https://huggingface.co/spaces/openbmb/MiniCPM-V-2).
+我们提供由 Hugging Face [Gradio](https://github.com/gradio-app/gradio) 支持的在线和本地 Demo。Gradio 是目前最流行的模型部署框架，支持流式输出、进度条、process bars 和其他常用功能。
+
+### Online Demo <!-- omit in toc --> 
+
+欢迎试用 Hugging Face Spaces 上的 [MiniCPM-Llama3-V 2.5](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5) ｜ [MiniCPM-V 2.0](https://huggingface.co/spaces/openbmb/MiniCPM-V-2) Online Demo。
+
+### 本地 WebUI Demo <!-- omit in toc --> 
+
+您可以使用以下命令轻松构建自己的本地 WebUI Demo。
+
+```shell
+pip install -r requirements.txt
+```
+
+```shell
+# 对于 NVIDIA GPU，请运行：
+python web_demo_2.5.py --device cuda
+
+# 对于搭载 MPS 的 Mac（Apple 芯片或 AMD GPU），请运行：
+PYTORCH_ENABLE_MPS_FALLBACK=1 python web_demo_2.5.py --device mps
+```
+
+
 
 ## 安装
 
@@ -590,7 +617,7 @@ PYTORCH_ENABLE_MPS_FALLBACK=1 python test.py
 
 
 ### 手机端部署
-MiniCPM-V 2.0 可运行在Android手机上，点击[2.0](https://github.com/OpenBMB/mlc-MiniCPM)安装apk使用; MiniCPM-Llama3-V 2.5 将很快推出，敬请期待。
+MiniCPM-Llama3-V 2.5 和 MiniCPM-V 2.0 可运行在Android手机上，点击[MiniCPM-Llama3-V 2.5](http://minicpm.modelbest.cn/android/modelbest-release-20240528_182155.apk) / [MiniCPM-V 2.0](https://github.com/OpenBMB/mlc-MiniCPM)安装apk使用; 
 
 ### 本地WebUI Demo部署
 <details>
@@ -614,7 +641,7 @@ MiniCPM-Llama3-V 2.5 现在支持llama.cpp啦! 用法请参考我们的fork [lla
 
 ### vLLM 部署 <a id='vllm'></a>
 <details>
-<summary>点击查看 vLLM 部署运行的方法</summary>
+<summary>点击查看 MiniCPM-V 2.0 利用vLLM 部署运行的方法（MiniCPM-Llama3-V 2.5 支持vLLM将在近期推出）</summary>
 由于我们对 vLLM 提交的 PR 还在 review 中，因此目前我们 fork 了一个 vLLM 仓库以供测试使用。
 
 1. 首先克隆我们 fork 的 vLLM 库:
@@ -662,14 +689,9 @@ python examples/minicpmv_example.py
 
 ## 模型协议 <!-- omit in toc -->
 
-本仓库中代码依照 Apache-2.0 协议开源
-
-本项目中模型权重的使用遵循 “[通用模型许可协议-来源说明-宣传限制-商业授权](https://github.com/OpenBMB/General-Model-License/blob/main/通用模型许可协议-来源说明-宣传限制-商业授权.md)”。
-
-本项目中模型权重对学术研究完全开放。
-
-如需将模型用于商业用途，请联系 cpm@modelbest.cn 来获取书面授权，登记后可以免费商业使用。
-
+* 本仓库中代码依照 [Apache-2.0](https://github.com/OpenBMB/MiniCPM/blob/main/LICENSE) 协议开源
+* MiniCPM-V 模型权重的使用则需要遵循 [“MiniCPM模型商用许可协议.md”](https://github.com/OpenBMB/MiniCPM/blob/main/MiniCPM%E6%A8%A1%E5%9E%8B%E5%95%86%E7%94%A8%E8%AE%B8%E5%8F%AF%E5%8D%8F%E8%AE%AE.md)。
+* MiniCPM 模型权重对学术研究完全开放，在填写[“问卷”](https://modelbest.feishu.cn/share/base/form/shrcnpV5ZT9EJ6xYjh3Kx0J6v8g)进行登记后亦允许免费商业使用。
 
 ## 声明 <!-- omit in toc -->
 
@@ -694,9 +716,31 @@ python examples/minicpmv_example.py
 
 ## 🌟 Star History
 
-<div>
-<img src="./assets/Star-History.png" width="500em" ></img> 
-</div>
+
+<table align="center">
+    <p align="center">
+      <img src="assets/star_history.svg"/>
+    </p>
+</table>
+
+<!-- <picture>
+  <source
+    media="(prefers-color-scheme: dark)"
+    srcset="
+      https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date&theme=dark
+    "
+  />
+  <source
+    media="(prefers-color-scheme: light)"
+    srcset="
+      https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date
+    "
+  />
+  <img
+    alt="Star History Chart"
+    src="https://api.star-history.com/svg?repos=OpenBMB/MiniCPM-V&type=Date"
+  />
+</picture> -->
 
 
 ## 引用
