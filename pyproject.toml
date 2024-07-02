@@ -1,0 +1,15 @@
+[project]
+name = "comfyui_minicpm-v"
+description = "Unofficial implementation of [a/MiniCPM-V](https://github.com/OpenBMB/MiniCPM-V) for ComfyUI"
+version = "1.0.0"
+license = "LICENSE"
+dependencies = ["torch", "torchvision", "numpy", "pillow", "huggingface_hub", "transformers"]
+
+[project.urls]
+Repository = "https://github.com/hay86/ComfyUI_MiniCPM-V"
+#  Used by Comfy Registry https://comfyregistry.org
+
+[tool.comfy]
+PublisherId = "hay86"
+DisplayName = "ComfyUI_MiniCPM-V"
+Icon = ""
