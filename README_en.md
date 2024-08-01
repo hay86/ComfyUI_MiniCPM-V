@@ -29,7 +29,7 @@ Join our <a href="docs/wechat.md" target="_blank"> 💬 WeChat</a>
 ## News <!-- omit in toc -->
 
 #### 📌 Pinned
-
+* [2024.07.19] MiniCPM-Llama3-V 2.5 supports vLLM now! See [here](#vllm).
 * [2024.05.28] 🚀🚀🚀 MiniCPM-Llama3-V 2.5 now fully supports its feature in llama.cpp and ollama! Please pull the latest code **of our provided forks** ([llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md), [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5)). GGUF models in various sizes are available [here](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf/tree/main). MiniCPM-Llama3-V 2.5 series is **not supported by the official repositories yet**, and we are working hard to merge PRs. Please stay tuned!
 * [2024.05.28] 💫 We now support LoRA fine-tuning for MiniCPM-Llama3-V 2.5, using only 2 V100 GPUs! See more statistics [here](https://github.com/OpenBMB/MiniCPM-V/tree/main/finetune#model-fine-tuning-memory-usage-statistics).
 * [2024.05.23] 🔍 We've released a comprehensive comparison between Phi-3-vision-128k-instruct and MiniCPM-Llama3-V 2.5, including benchmarks evaluations, multilingual capabilities, and inference efficiency 🌟📊🌍🚀. Click [here](./docs/compare_with_phi-3_vision.md) to view more details.
@@ -91,6 +91,15 @@ Join our <a href="docs/wechat.md" target="_blank"> 💬 WeChat</a>
 
 -  💫  **Easy Usage.**
 MiniCPM-Llama3-V 2.5 can be easily used in various ways: (1) [llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md) and [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5) support for efficient CPU inference on local devices, (2) [GGUF](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5-gguf) format quantized models in 16 sizes, (3) efficient [LoRA](https://github.com/OpenBMB/MiniCPM-V/tree/main/finetune#lora-finetuning) fine-tuning with only 2 V100 GPUs, (4) [streaming output](https://huggingface.co/openbmb/MiniCPM-Llama3-V-2_5#usage), (5) quick local WebUI demo setup with [Gradio](https://github.com/OpenBMB/MiniCPM-V/blob/main/web_demo_2.5.py) and [Streamlit](https://github.com/OpenBMB/MiniCPM-V/blob/main/web_demo_streamlit-2_5.py), and (6) interactive demos on [HuggingFace Spaces](https://huggingface.co/spaces/openbmb/MiniCPM-Llama3-V-2_5).
+
+### MiniCPM-Llama3-V 2.5 Common Module Navigation <!-- omit in toc -->
+You can click links in the following table to quickly access the commonly used functions for MiniCPM-Llama3-V 2.5.
+| Functional Categories  |  | |  |  | |  |  ||
+|:--------:|:------:|:--------------:|:--------:|:-------:|:-----------:|:-----------:|:--------:|:-----------:|
+| Inference | [Transformers](https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/inference_on_multiple_gpus.md) | [ollama](https://github.com/OpenBMB/ollama/tree/minicpm-v2.5/examples/minicpm-v2.5) | [SWIFT](./docs/swift_train_and_infer.md) | [llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md) | [Xinfrence](./docs/xinference_infer.md) | [Gradio](./web_demo_2.5.py) | [Streamlit](./web_demo_streamlit-2_5.py) |[vLLM](#vllm)
+| Finetune     | [Full-parameter](./finetune/readme.md) |   [Lora](./finetune/readme.md)     | [SWIFT](./docs/swift_train_and_infer.md)           |  |             |             |          |             |
+| Edge Deployment  | [apk](http://minicpm.modelbest.cn/android/modelbest-release-20240528_182155.apk)  | [llama.cpp](https://github.com/OpenBMB/llama.cpp/blob/minicpm-v2.5/examples/minicpmv/README.md)               |  |        |             |             |          |             |
+| Quantize | [Bnb](./quantize/bnb_quantize.py)  |            
 
 ### Evaluation  <!-- omit in toc -->
 
@@ -566,6 +575,8 @@ You will get the following output:
 "The Airbus A380 is a double-deck, wide-body, four-engine jet airliner made by Airbus. It is the world's largest passenger airliner and is known for its long-haul capabilities. The aircraft was developed to improve efficiency and comfort for passengers traveling over long distances. It has two full-length passenger decks, which can accommodate more passengers than a typical single-aisle airplane. The A380 has been operated by airlines such as Lufthansa, Singapore Airlines, and Emirates, among others. It is widely recognized for its unique design and significant impact on the aviation industry."
 ```
 
+### Inference on Multiple GPUs
+You can run MiniCPM-Llama3-V 2.5 on multiple low VRAM GPUs (12 GB or 16 GB) by distributing the model's layers across multiple GPUs. Please refer to this [tutorial](https://github.com/OpenBMB/MiniCPM-V/blob/main/docs/inference_on_multiple_gpus.md) for detailed instructions on how to load the model and inference using multiple low VRAM GPUs.
 
 
 ### Inference on Mac
@@ -612,12 +623,11 @@ MiniCPM-Llama3-V 2.5 can run with llama.cpp now! See our fork of [llama.cpp](htt
 ### Inference with vLLM<a id="vllm"></a>
 
 <details>
-<summary>Click to see how to inference MiniCPM-V 2.0 with vLLM (MiniCPM-Llama3-V 2.5 coming soon) </summary>
-Because our pull request to vLLM is still waiting for reviewing, we fork this repository to build and test our vLLM demo. Here are the steps:
+<summary> vLLM now officially supports MiniCPM-V 2.0 and MiniCPM-Llama3-V 2.5, Click to see. </summary>
 
-1. Clone our version of vLLM:
+1. Clone the official vLLM:
 ```shell
-git clone https://github.com/OpenBMB/vllm.git
+git clone https://github.com/vllm-project/vllm.git
 ```
 2. Install vLLM:
 ```shell
@@ -628,7 +638,7 @@ pip install -e .
 ```shell
 pip install timm==0.9.10
 ```
-4. Run our demo:
+4. Run the example:（If you use model in local path, please update the model code to the latest version on Hugging Face.)
 ```shell
 python examples/minicpmv_example.py 
 ```
