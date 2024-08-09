@@ -5,6 +5,8 @@ import folder_paths
 from transformers import AutoTokenizer, AutoModel
 from torchvision.transforms.v2 import ToPILImage
 
+to_image = ToPILImage()
+
 class D_MiniCPM_VQA:
     def __init__(self):
         self.model_checkpoint = None
@@ -19,8 +21,9 @@ class D_MiniCPM_VQA:
             "required": {
                 "image": ("IMAGE",),
                 "text": ("STRING", {"default": '', "multiline": True}),
-                "model": (["MiniCPM-V", "MiniCPM-V-2", "MiniCPM-Llama3-V-2_5"],),
-                "temperature": ("FLOAT", {"default": 0.7,})
+                "model": (["MiniCPM-V", "MiniCPM-V-2", "MiniCPM-Llama3-V-2_5", "MiniCPM-Llama3-V-2_5-int4", "MiniCPM-V-2_6", "MiniCPM-V-2_6-int4"],),
+                "temperature": ("FLOAT", {"default": 0.7,}),
+                "video_max_num_frames": ("INT", {"default": 0,}),
             },
         }
 
@@ -28,7 +31,7 @@ class D_MiniCPM_VQA:
     FUNCTION = "inference"
     CATEGORY = "MiniCPM-V"
 
-    def inference(self, image, text, model, temperature):
+    def inference(self, image, text, model, temperature, video_max_num_frames):
         model_id = f"openbmb/{model}"
         model_checkpoint = os.path.join(folder_paths.models_dir, 'prompt_generator', os.path.basename(model_id))
 
@@ -39,22 +42,60 @@ class D_MiniCPM_VQA:
         if self.model_checkpoint != model_checkpoint:
             self.model_checkpoint = model_checkpoint
             self.tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, trust_remote_code=True)
-            self.model = AutoModel.from_pretrained(model_checkpoint, trust_remote_code=True, torch_dtype=torch.bfloat16)
-            self.model = self.model.to(self.device, dtype=torch.bfloat16 if self.bf16_support else torch.float16).eval()
 
-        with torch.no_grad():
-            image = ToPILImage()(image.permute([0,3,1,2])[0]).convert("RGB")
-
-            result = self.model.chat(
-                image=image,
-                msgs=[{'role': 'user', 'content': text}],
-                context=None,
-                tokenizer=self.tokenizer,
-                sampling=True,
-                temperature=temperature
-            )
             if model in ["MiniCPM-V", "MiniCPM-V-2"]:
-                result = result[0]
+                self.model = AutoModel.from_pretrained(model_checkpoint, trust_remote_code=True, torch_dtype=torch.bfloat16)
+                self.model = self.model.to(self.device, dtype=torch.bfloat16 if self.bf16_support else torch.float16)
+            elif model in ["MiniCPM-Llama3-V-2_5"]:
+                self.model = AutoModel.from_pretrained(model_checkpoint, trust_remote_code=True, torch_dtype=torch.float16)
+                self.model = self.model.to(self.device)
+            elif model in ["MiniCPM-V-2_6"]:
+                self.model = AutoModel.from_pretrained(model_checkpoint, trust_remote_code=True, attn_implementation='sdpa', torch_dtype=torch.bfloat16)
+                self.model = self.model.to(self.device, dtype=torch.bfloat16 if self.bf16_support else torch.float16)
+            elif model in ["MiniCPM-Llama3-V-2_5-int4", "MiniCPM-V-2_6-int4"]:
+                self.model = AutoModel.from_pretrained(model_checkpoint, trust_remote_code=True)
+
+        self.model.eval()
+        with torch.no_grad():
+            if model in ["MiniCPM-V", "MiniCPM-V-2"]:
+                image = to_image(image.permute([0,3,1,2])[0]).convert("RGB")
+                result = self.model.chat(
+                    image=image,
+                    msgs=[{'role': 'user', 'content': text}],
+                    context=None,
+                    tokenizer=self.tokenizer,
+                    sampling=True,
+                    temperature=temperature
+                )[0]
+            elif model in ["MiniCPM-Llama3-V-2_5", "MiniCPM-Llama3-V-2_5-int4"]:
+                image = to_image(image.permute([0,3,1,2])[0]).convert("RGB")
+                result = self.model.chat(
+                    image=image,
+                    msgs=[{'role': 'user', 'content': text}],
+                    tokenizer=self.tokenizer,
+                    sampling=True,
+                    temperature=temperature
+                )
+            elif model in ["MiniCPM-V-2_6", "MiniCPM-V-2_6-int4"]:
+                images = image.permute([0,3,1,2])
+                images = [to_image(img).convert("RGB") for img in images]
+
+                params = {"use_image_id": False, "max_slice_nums": 1} if video_max_num_frames > 0 else {}
+
+                def uniform_sample(frames, max_num):
+                    if len(frames) <= max_num or max_num <= 0:
+                        return frames
+                    gap = len(frames) / max_num
+                    return [frames[int(i * gap + gap / 2)] for i in range(max_num)]
+
+                sampled_images = uniform_sample(images, video_max_num_frames)
+
+                result = self.model.chat(
+                    image=None,
+                    msgs=[{'role': 'user', 'content': sampled_images + [text]}],
+                    tokenizer=self.tokenizer,
+                    **params
+                )
             return (result,)
         
 
