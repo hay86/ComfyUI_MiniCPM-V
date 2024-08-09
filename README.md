@@ -12,6 +12,11 @@ This [workflow](examples/workflow.json) shows the basic usage on querying an ima
 
  ![](examples/workflow.png)
 
+## Version 2.6 Workflow
+This [workflow](examples/workflow26.json) shows the Verson 2.6's usage on querying multiple images and a video.
+
+ ![](examples/workflow26.png) 
+
 ## Installation
 - Install from ComfyUI Manager (search for `minicpm`)
 
