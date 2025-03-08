@@ -2,7 +2,7 @@
 name = "comfyui_minicpm-v"
 description = "Unofficial implementation of [a/MiniCPM-V](https://github.com/OpenBMB/MiniCPM-V) for ComfyUI"
 version = "1.0.0"
-license = "LICENSE"
+license = { file = "LICENSE" }
 dependencies = ["torch", "torchvision", "numpy", "pillow", "huggingface_hub", "transformers"]
 
 [project.urls]
